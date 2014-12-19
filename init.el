@@ -17,9 +17,9 @@
 
 ;; バックアップとオートセーブファイルを ~/.emacs.d/backups/へ集める
 (add-to-list 'backup-directory-alist
-			 (cons "." "~/.emacs.d/backups/"))
+    (cons "." "~/.emacs.d/backups/"))
 (setq auto-save-file-name-transforms
-	  `((".*" ,(expand-file-name "~/.emacs.d/backups/") t)))
+    `((".*" ,(expand-file-name "~/.emacs.d/backups/") t)))
 
 (require 'package)
 
@@ -206,7 +206,10 @@
 
 
 ;; タブ幅
-(custom-set-variables '(tab-width 4))
+(custom-set-variables '(tab-width 2))
+
+;; インデントにタブ文字を使用しない
+(setq-default indent-tabs-mode nil)
 
 ; yes or noをy or n
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -261,9 +264,9 @@
 (defun elisp-mode-hooks ()
   "Lisp-mode-hooks"
   (when (require 'eldoc nil t)
-	(setq eldoc-idle-delay 0.2)
-	(setq eldoc-echo-area-use-multiline-p t)
-	(turn-on-eldoc-mode)))
+  (setq eldoc-idle-delay 0.2)
+  (setq eldoc-echo-area-use-multiline-p t)
+  (turn-on-eldoc-mode)))
 
 ;; emacs-lisp-mode のフックをセットアップ
 (add-hook 'emacs-lisp-mode-hook 'elisp-mode-hooks)
