@@ -55,7 +55,7 @@
 ; ======================================================================
 ;           magit
 ; ======================================================================
-(require 'magit)
+;(require 'magit)
 
 ; =====================================================================
 ;           git-gutter
@@ -71,7 +71,7 @@
 (git-gutter:linum-setup)
 
 ;; If you enable git-gutter-mode for some modes
-(add-hook 'ruby-mode-hook 'git-gutter-mode)
+(add-hook 'enh-ruby-mode-hook 'git-gutter-mode)
 
 (global-set-key (kbd "C-x C-g") 'git-gutter:toggle)
 (global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
@@ -86,6 +86,10 @@
 ;; Revert current hunk
 (global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk)
 
+;; auto-complete
+(require 'auto-complete)
+(require 'auto-complete-config)    ; 必須ではないですが一応
+(global-auto-complete-mode t)
 
 
 
@@ -173,6 +177,12 @@
 ;; スタートアップ非表示
 (setq inhibit-startup-screen t)
 
+;; 括弧の自動補完
+;;(electric-pair-mode t)
+;;(add-to-list 'electric-pair-pairs '(?| . ?|))
+;;(add-to-list 'electric-pair-pairs '(?' . ?'))
+;;(add-to-list 'electric-pair-pairs '(?" . ?"))
+
 ;; scratchの初期メッセージ消去
 (setq initial-scratch-message "")
 
@@ -190,6 +200,7 @@
 
 ;; 行番号フォーマット
 (setq linum-format "%4d")
+
 
 ;; 括弧の範囲内を強調表示
 (show-paren-mode t)
@@ -275,6 +286,11 @@
 
 ;; emacs-lisp-mode のフックをセットアップ
 (add-hook 'emacs-lisp-mode-hook 'elisp-mode-hooks)
+
+;; ピープ音を鳴らさない
+(setq visible-bell t)
+(setq ring-bell-function 'ignore)
+
 
 
 ;; ------------------------------------------------------------------------
@@ -453,7 +469,9 @@
 
 ;; ruby-electric
 (require 'ruby-electric)
-(add-hook 'enh-ruby-mode-hook '(lambda () (ruby-electric-mode t)))
+(eval-after-load "enh-ruby-mode"
+      '(add-hook 'enh-ruby-mode-hook 'ruby-electric-mode))
+
 
 ;; ruby-block
 (require 'ruby-block)
@@ -544,7 +562,8 @@
       (setq write-file-hooks
             (cons 'time-stamp write-file-hooks)))
   (setq time-stamp-format " %3a %3b %02d %02H:%02M:%02S %:y %Z")
-  (setq time-stamp-start "Last modified:")
+  (setq time-stamp-start "Last modified:
+")
   (setq time-stamp-end "$")
   ;; web-modeの設定
   (setq web-mode-markup-indent-offset 2) ;; html indent
@@ -606,6 +625,8 @@
 (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.scss\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
 (setq web-mode-engines-alist
 '(("php"    . "\\.phtml\\'")
   ("blade"  . "\\.blade\\.")))
