@@ -90,7 +90,11 @@
 (require 'auto-complete)
 (require 'auto-complete-config)    ; 必須ではないですが一応
 (global-auto-complete-mode t)
-
+(define-key ac-completing-map (kbd "C-n") 'ac-next)      ; M-nで次候補選択
+(define-key ac-completing-map (kbd "C-p") 'ac-previous)  ; C-p で前候補選択
+(ac-config-default)
+(add-to-list 'ac-modes 'enh-ruby-mode)
+(add-to-list 'ac-modes 'web-mode)
 
 
 ; ======================================================================
@@ -144,19 +148,20 @@
          (setq file-name-coding-system 'utf-8-hfs)
          (setq locale-coding-system 'utf-8-hfs))))
 
-;; Windowsで英数と日本語にMeiryoを指定
-;; Macで英数と日本語にRictyを指定
-(let ((ws window-system))
-  (cond ((eq ws 'w32)
-         (set-face-attribute 'default nil
-                             :family "Meiryo"  ;; 英数
-                             :height 130)
-         (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Meiryo")))  ;; 日本語
-        ((eq ws 'ns)
-         (set-face-attribute 'default nil
-                             :family "Ricty"  ;; 英数
-                             :height 130)
-         (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Ricty")))))  ;; 日本語
+;;フォントをRictyにする
+(set-face-attribute 'default nil
+                    :family "Ricty Discord"
+                    :height 140)
+(set-fontset-font (frame-parameter nil 'font)
+                  'japanese-jisx0208
+                  (cons "Ricty Discord" "iso10646-1"))
+(set-fontset-font (frame-parameter nil 'font)
+                  'japanese-jisx0212
+                  (cons "Ricty Discord" "iso10646-1"))
+(set-fontset-font (frame-parameter nil 'font)
+                  'katakana-jisx0201
+                  (cons "Ricty Discord" "iso10646-1"))
+
 
 (setq default-input-method "MacOSX")
 
@@ -485,8 +490,6 @@
 
 
 
-
-
 ;;======================================================================
 ;                      Ruby on Rails
 ;;======================================================================
@@ -511,7 +514,7 @@
 ;; fix above keybind can't be applied til state changes
 ;; https://bitbucket.org/lyro/evil/issue/301/evil-define-key-for-minor-mode-does-not
 (add-hook 'find-file-hook
-          #'(lambda ()
+          '(lambda ()
               (when projectile-rails-mode
                   (evil-normalize-keymaps))))
 
@@ -562,8 +565,7 @@
       (setq write-file-hooks
             (cons 'time-stamp write-file-hooks)))
   (setq time-stamp-format " %3a %3b %02d %02H:%02M:%02S %:y %Z")
-  (setq time-stamp-start "Last modified:
-")
+  (setq time-stamp-start "Last modified:")
   (setq time-stamp-end "$")
   ;; web-modeの設定
   (setq web-mode-markup-indent-offset 2) ;; html indent
