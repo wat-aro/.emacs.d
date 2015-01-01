@@ -19,3 +19,4 @@ doc/
 .secret
 *.el#
 history
+.dat
