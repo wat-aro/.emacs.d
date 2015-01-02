@@ -183,6 +183,10 @@
 (setq inhibit-startup-screen t)
 
 ;; 括弧の自動補完
+(require 'smartparens-config)
+(smartparens-global-mode t)
+
+;; 括弧の自動補完
 ;;(electric-pair-mode t)
 ;;(add-to-list 'electric-pair-pairs '(?| . ?|))
 ;;(add-to-list 'electric-pair-pairs '(?' . ?'))
