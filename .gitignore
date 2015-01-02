@@ -19,4 +19,4 @@ doc/
 .secret
 *.el#
 history
-.dat
+wget-log
