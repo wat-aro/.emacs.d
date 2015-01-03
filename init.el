@@ -476,11 +476,21 @@
 (add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
 
+(setq ruby-insert-encoding-magic-comment nil)
+
 ;; ruby-electric
 (require 'ruby-electric)
 (eval-after-load "enh-ruby-mode"
       '(add-hook 'enh-ruby-mode-hook 'ruby-electric-mode))
 
+;; 保存時にmagic commentを追加しないようにする
+(defadvice enh-ruby-mode-set-encoding (around stop-enh-ruby-mode-set-encoding)
+  "If enh-ruby-not-insert-magic-comment is true, stops enh-ruby-mode-set-encoding."
+  (if (and (boundp 'enh-ruby-not-insert-magic-comment)
+           (not enh-ruby-not-insert-magic-comment))
+      ad-do-it))
+(ad-activate 'enh-ruby-mode-set-encoding)
+(setq-default enh-ruby-not-insert-magic-comment t)
 
 ;; ruby-block
 (require 'ruby-block)
@@ -569,7 +579,7 @@
       (setq write-file-hooks
             (cons 'time-stamp write-file-hooks)))
   (setq time-stamp-format " %3a %3b %02d %02H:%02M:%02S %:y %Z")
-  (setq time-stamp-start "Last modified: Sat Jan 03 18:46:56 2015 JST
+  (setq time-stamp-start "Last modified: Sat Jan 03 19:44:05 2015 JST
   (setq time-stamp-end "$")
   ;; web-modeの設定
   (setq web-mode-markup-indent-offset 2) ;; html indent
