@@ -90,8 +90,8 @@
 (require 'auto-complete)
 (require 'auto-complete-config)    ; 必須ではないですが一応
 (global-auto-complete-mode t)
-(define-key ac-completing-map (kbd "C-n") 'ac-next)      ; M-nで次候補選択
-(define-key ac-completing-map (kbd "C-p") 'ac-previous)  ; C-p で前候補選択
+(define-key ac-completing-map (kbd "M-n") 'ac-next)      ; M-nで次候補選択
+(define-key ac-completing-map (kbd "M-p") 'ac-previous)  ; C-p で前候補選択
 (ac-config-default)
 (add-to-list 'ac-modes 'enh-ruby-mode)
 (add-to-list 'ac-modes 'web-mode)
@@ -569,7 +569,7 @@
       (setq write-file-hooks
             (cons 'time-stamp write-file-hooks)))
   (setq time-stamp-format " %3a %3b %02d %02H:%02M:%02S %:y %Z")
-  (setq time-stamp-start "Last modified:")
+  (setq time-stamp-start "Last modified: Sat Jan 03 18:46:56 2015 JST
   (setq time-stamp-end "$")
   ;; web-modeの設定
   (setq web-mode-markup-indent-offset 2) ;; html indent
