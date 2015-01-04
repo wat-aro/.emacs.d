@@ -1,4 +1,4 @@
-; -*- Mode: Emacs-Lisp ; Coding: utf-8 -*-
+;; -*- Mode: Emacs-Lisp ; Coding: utf-8 -*-
 ;; ------------------------------------------------------------------------
 ;; @ load-path
 
@@ -267,7 +267,7 @@
 (setq comint-scroll-show-maximum-output t) ;; shell-mode
 
 ;; フレームの透明度
-(set-frame-parameter (selected-frame) 'alpha '(0.95))
+(set-frame-parameter (selected-frame) 'alpha '(0.75))
 
 
 ;; モードラインに行番号表示
@@ -579,7 +579,7 @@
       (setq write-file-hooks
             (cons 'time-stamp write-file-hooks)))
   (setq time-stamp-format " %3a %3b %02d %02H:%02M:%02S %:y %Z")
-  (setq time-stamp-start "Last modified: Sat Jan 03 19:44:05 2015 JST
+  (setq time-stamp-start "Last modified: ")
   (setq time-stamp-end "$")
   ;; web-modeの設定
   (setq web-mode-markup-indent-offset 2) ;; html indent
