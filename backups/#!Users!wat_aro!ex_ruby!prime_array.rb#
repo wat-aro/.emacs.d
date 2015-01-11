@@ -1,0 +1,4 @@
+def prime_array(num)
+  prime = []
+  ary = [2..Math.sqrt(num)]
+  ary.each do |enum|
