@@ -126,7 +126,8 @@
            )))
 
 (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
-
+(global-set-key (kbd "C-c l")
+                'org-store-link)
 
 ;; ------------------------------------------------------------------------
 ;; @ general
@@ -149,18 +150,19 @@
          (setq locale-coding-system 'utf-8-hfs))))
 
 ;;フォントをRictyにする
-(set-face-attribute 'default nil
-                    :family "Ricty Discord"
-                    :height 140)
-(set-fontset-font (frame-parameter nil 'font)
-                  'japanese-jisx0208
-                  (cons "Ricty Discord" "iso10646-1"))
-(set-fontset-font (frame-parameter nil 'font)
-                  'japanese-jisx0212
-                  (cons "Ricty Discord" "iso10646-1"))
-(set-fontset-font (frame-parameter nil 'font)
-                  'katakana-jisx0201
-                  (cons "Ricty Discord" "iso10646-1"))
+(set-face-font 'default "Ricty-15:bold")
+;;(set-face-attribute 'default nil
+;;                    :family "Ricty Discord"
+;;                    :height 140)
+;;(set-fontset-font (frame-parameter nil 'font)
+;;                  'japanese-jisx0208
+;;                  (cons "Ricty Discord" "iso10646-1"))
+;;(set-fontset-font (frame-parameter nil 'font)
+;;                  'japanese-jisx0212
+;;                  (cons "Ricty Discord" "iso10646-1"))
+;;(set-fontset-font (frame-parameter nil 'font)
+;;                  'katakana-jisx0201
+;;                  (cons "Ricty Discord" "iso10646-1"))
 
 
 (setq default-input-method "MacOSX")
