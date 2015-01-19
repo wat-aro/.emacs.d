@@ -367,10 +367,11 @@
 ; --------------------------------------------------------------------
 (setq process-coding-system-alist
       (cons '("gosh" utf-8 . utf-8) process-coding-system-alist))
-(when (eq system-type 'gnu/linux)
+(cond
+ ((eq system-type 'gnu/linux)
   (setq scheme-program-name "gosh -i"))
-(when (eq system-type 'darwin)
-  (setq scheme-program-name "/usr/local/bin/gosh -i"))
+ ((eq system-type 'darwin)
+  (setq scheme-program-name "/usr/local/bin/gosh -i")))
 
 (autoload 'scheme-mode "cmuscheme" "Major mode for Scheme." t)
 (autoload 'run-scheme "cmuscheme" "Run an inferior Scheme process." t)
