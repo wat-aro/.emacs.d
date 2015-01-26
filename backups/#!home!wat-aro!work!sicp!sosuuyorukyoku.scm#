@@ -1,8 +1,0 @@
-(define liner
-  (lambda (a b x)
-    (+ (* a x) b)))
-
-(define liner#
-  (lambda (u v w)
-    (+ (* u w) v)))
-
