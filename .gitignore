@@ -20,3 +20,4 @@ doc/
 *.el#
 history
 wget-log
+recentf
