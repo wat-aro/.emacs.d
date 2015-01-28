@@ -514,54 +514,54 @@
 ;                      Ruby on Rails
 ;;======================================================================
 
-(require 'projectile)
-(projectile-global-mode)
+;;(require 'projectile)
+;;(projectile-global-mode)
 
-(require 'projectile-rails)
-(add-hook 'projectile-mode-hook 'projectile-rails-on)
+;;(require 'projectile-rails)
+;;(add-hook 'projectile-mode-hook 'projectile-rails-on)
 
 
 ;; rirariと同様のキーバインドを使う
-(define-key projectile-rails-mode-map (kbd "C-c ; f m") 'projectile-rails-find-current-model)
-(define-key projectile-rails-mode-map (kbd "C-c ; f c") 'projectile-rails-find-current-controller)
-(define-key projectile-rails-mode-map (kbd "C-c ; f v") 'projectile-rails-find-current-view)
-(define-key projectile-rails-mode-map (kbd "C-c ; f s") 'projectile-rails-find-current-spec)
-(define-key projectile-rails-mode-map (kbd "C-c ; c") 'projectile-rails-console)
+;;(define-key projectile-rails-mode-map (kbd "C-c ; f m") 'projectile-rails-find-current-model)
+;;(define-key projectile-rails-mode-map (kbd "C-c ; f c") 'projectile-rails-find-current-controller)
+;;(define-key projectile-rails-mode-map (kbd "C-c ; f v") 'projectile-rails-find-current-view)
+;;(define-key projectile-rails-mode-map (kbd "C-c ; f s") 'projectile-rails-find-current-spec)
+;;(define-key projectile-rails-mode-map (kbd "C-c ; c") 'projectile-rails-console)
 
 ;; evilの`gf`で`projectile-rails-goto-file-at-point`を使うように
 ;(evil-define-key 'normal projectile-rails-mode-map (kbd "gf")
 ;  'projectile-rails-goto-file-at-point)
 ;; fix above keybind can't be applied til state changes
 ;; https://bitbucket.org/lyro/evil/issue/301/evil-define-key-for-minor-mode-does-not
-(add-hook 'find-file-hook
-          '(lambda ()
-              (when projectile-rails-mode
-                  (evil-normalize-keymaps))))
+;;(add-hook 'find-file-hook
+;;          '(lambda ()
+;;              (when projectile-rails-mode
+;;                  (evil-normalize-keymaps))))
 
 ;; `app/views/application`と`app/views/shared`のビューも探す候補に入れる
-(defun projectile-rails-goto-template-at-point ()
-  (interactive)
-  (let* ((template (projectile-rails-filename-at-point))
-         (dir (projectile-rails-template-dir template))
-         (name (projectile-rails-template-name template))
-         (format (projectile-rails-template-format template)))
-    (if format
-        (loop for processor in '("erb" "haml" "slim")
-              for template = (s-lex-format "${dir}${name}.${format}.${processor}")
-              for partial = (s-lex-format "${dir}_${name}.${format}.${processor}")
-              for partial-2 = (expand-file-name
-                               (s-lex-format "_${name}.${format}.${processor}")
-                               (projectile-expand-root "app/views/application"))
-              for partial-3 = (expand-file-name
-                               (s-lex-format "_${name}.${format}.${processor}")
-                               (projectile-expand-root "app/views/shared"))
-              until (or
-                     (projectile-rails-ff template)
-                     (projectile-rails-ff partial)
-                     (projectile-rails-ff partial-2)
-                     (projectile-rails-ff partial-3)))
-      (message "Could not recognize the template's format")
-      (dired dir))))
+;;(defun projectile-rails-goto-template-at-point ()
+;;  (interactive)
+;;  (let* ((template (projectile-rails-filename-at-point))
+;;         (dir (projectile-rails-template-dir template))
+;;         (name (projectile-rails-template-name template))
+;;         (format (projectile-rails-template-format template)))
+;;    (if format
+;;        (loop for processor in '("erb" "haml" "slim")
+;;              for template = (s-lex-format "${dir}${name}.${format}.${processor}")
+;;              for partial = (s-lex-format "${dir}_${name}.${format}.${processor}")
+;;              for partial-2 = (expand-file-name
+;;                               (s-lex-format "_${name}.${format}.${processor}")
+;;                               (projectile-expand-root "app/views/application"))
+;;              for partial-3 = (expand-file-name
+;;                               (s-lex-format "_${name}.${format}.${processor}")
+;;                               (projectile-expand-root "app/views/shared"))
+;;              until (or
+;;                     (projectile-rails-ff template)
+;;                     (projectile-rails-ff partial)
+;;                     (projectile-rails-ff partial-2)
+;;                     (projectile-rails-ff partial-3)))
+;;      (message "Could not recognize the template's format")
+;;      (dired dir))))
 
 
 ; RSPEC
@@ -585,7 +585,7 @@
       (setq write-file-hooks
             (cons 'time-stamp write-file-hooks)))
   (setq time-stamp-format " %3a %3b %02d %02H:%02M:%02S %:y %Z")
-  (setq time-stamp-start "Last modified: ")
+  (setq time-stamp-start "Last modified:"
   (setq time-stamp-end "$")
   ;; web-modeの設定
   (setq web-mode-markup-indent-offset 2) ;; html indent
