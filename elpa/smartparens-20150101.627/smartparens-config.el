@@ -96,6 +96,7 @@
 (eval-after-load "lua-mode"      '(require 'smartparens-lua))
 (eval-after-load "ruby-mode"     '(require 'smartparens-ruby))
 (eval-after-load "enh-ruby-mode" '(require 'smartparens-ruby))
+(eval-after-load "web-mode" '(require 'smartparens-html))
 
 (provide 'smartparens-config)
 

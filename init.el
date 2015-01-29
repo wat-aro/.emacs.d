@@ -150,7 +150,7 @@
          (setq locale-coding-system 'utf-8-hfs))))
 
 ;;フォントをRictyにする
-(set-face-font 'default "Ricty-15:bold")
+(set-face-font 'default "Ricty-15:nil")
 ;;(set-face-attribute 'default nil
 ;;                    :family "Ricty Discord"
 ;;                    :height 140)
@@ -585,7 +585,7 @@
       (setq write-file-hooks
             (cons 'time-stamp write-file-hooks)))
   (setq time-stamp-format " %3a %3b %02d %02H:%02M:%02S %:y %Z")
-  (setq time-stamp-start "Last modified:")
+;;  (setq time-stamp-start "Last modified: 木曜日 1月 29 20:49:10 2015 JST
   (setq time-stamp-end "$")
   ;; web-modeの設定
   (setq web-mode-markup-indent-offset 2) ;; html indent
