@@ -1,7 +1,5 @@
 ;; -*- Mode: Emacs-Lisp ; Coding: utf-8 -*-
 ;; ------------------------------------------------------------------------
-(set-default-coding-systems 'utf-8)
-
 
 ;; @ load-path
 
@@ -139,18 +137,9 @@
 (require 'cl)
 
 ;; 文字コード
-(set-language-environment "Japanese")
-(let ((ws window-system))
-  (cond ((eq ws 'w32)
-         (prefer-coding-system 'utf-8-unix)
-         (set-default-coding-systems 'utf-8-unix)
-         (setq file-name-coding-system 'sjis)
-         (setq locale-coding-system 'utf-8))
-        ((eq ws 'ns)
-         (require 'ucs-normalize)
-         (prefer-coding-system 'utf-8-hfs)
-         (setq file-name-coding-system 'utf-8-hfs)
-         (setq locale-coding-system 'utf-8-hfs))))
+(prefer-coding-system 'utf-8)
+(setq coding-system-for-read 'utf-8)
+(setq coding-system-for-write 'utf-8)
 
 ;;フォントをRictyにする
 (set-face-font 'default "Ricty-15:nil")
@@ -172,7 +161,7 @@
 
 
 ;; Google 日本語入力
-(setq default-input-method "MacOSX")
+;;(setq default-input-method "MacOSX")
 ;(mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "あ")
 
 
@@ -339,6 +328,10 @@
 
 ;; C-x ? を help へ
 (global-set-key "\C-x?" 'help-command)
+
+;; インタラクティブにウィンドウを分割する
+(setq split-height-threshold nil)
+(setq split-width-threshold 100)
 
 ;; C-t でウィンドウを切り替える。
 (global-set-key "\C-t" 'other-window)
@@ -618,8 +611,10 @@
   ;;    ((t (:background "grey36"))))                ; javascript Blockの背景色
   ;;  )
   ;;(setq web-mode-enable-heredoc-fontification t)
-)
+  )
+
 (add-hook 'web-mode-hook  'web-mode-hook)
+
 ;; 色の設定
 (custom-set-faces
  '(web-mode-doctype-face
@@ -641,7 +636,6 @@
  '(web-mode-css-at-rule-face
    ((t (:foreground "#FF7F00"))))                          ; cssのタグ
  )
-
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[gj]sp\\'" . web-mode))
