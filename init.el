@@ -1,5 +1,8 @@
 ;; -*- Mode: Emacs-Lisp ; Coding: utf-8 -*-
 ;; ------------------------------------------------------------------------
+(set-default-coding-systems 'utf-8)
+
+
 ;; @ load-path
 
 ;; load-pathの追加関数
