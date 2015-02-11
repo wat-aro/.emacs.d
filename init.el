@@ -16,11 +16,12 @@
 ;; 2つ以上フォルダを指定する場合の引数 => (add-to-load-path "elisp" "xxx" "xxx")
 (add-to-load-path "elisp" "conf" "public_repos")
 
-;; バックアップとオートセーブファイルを ~/.emacs.d/backups/へ集める
+;;; --- バックアップとオートセーブ ---
+;; バックアップファイルとオートセーブファイルを ~/.emacs.d/backups/ へ集める
 (add-to-list 'backup-directory-alist
-    (cons "." "~/.emacs.d/backups/"))
+             (cons "." "~/.emacs.d/backups/"))
 (setq auto-save-file-name-transforms
-    `((".*" ,(expand-file-name "~/.emacs.d/backups/") t)))
+      `((".*" ,(expand-file-name "~/.emacs.d/backups/") t)))
 
 (require 'package)
 
@@ -66,6 +67,7 @@
 (add-hook 'enh-ruby-mode 'git-gutter-mode)
 (add-hook 'web-mode 'git-gutter-mode)
 
+
 ;; If you enable global minor mode
 (global-git-gutter-mode t)
 
@@ -88,6 +90,13 @@
 ;; Revert current hunk
 (global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk)
 
+;; anzu
+(global-anzu-mode +1)
+(custom-set-variables
+ '(anzu-mode-lighter "")
+ '(anzu-deactivate-region t)
+ '(anzu-search-threshold 1000))
+
 ;; auto-complete
 (require 'auto-complete)
 (require 'auto-complete-config)    ; 必須ではないですが一応
@@ -97,6 +106,14 @@
 (ac-config-default)
 (add-to-list 'ac-modes 'enh-ruby-mode)
 (add-to-list 'ac-modes 'web-mode)
+
+;; helm
+(require 'helm-config)
+(helm-mode 1)
+;; ミニバッファでC-hをバックスペースに割り当て
+(define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
+;; C-iで補完
+(define-key helm-read-file-map (kbd "C-i") 'helm-execute-persistent-action)
 
 
 ;; dired
@@ -370,7 +387,7 @@
 
 
 ;; C-h を バックスペースへ
-(global-set-key "\C-h" 'delete-backward-char)
+(keyboard-translate ?\C-h ?\C-?)
 
 ;; C-x ? を help へ
 (global-set-key "\C-x?" 'help-command)
