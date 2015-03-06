@@ -258,7 +258,7 @@
 
 (sp-with-modes '(ruby-mode enh-ruby-mode)
   (sp-local-pair "do" "end"
-                 :when '(("SPC" "RET" "<evil-ret>"))
+                 :when '(("SPC" "RET" "C-j" "<evil-ret>"))
                  :unless '(sp-ruby-in-string-or-word-p sp-in-comment-p)
                  :actions '(insert navigate)
                  :pre-handlers '(sp-ruby-pre-handler)
