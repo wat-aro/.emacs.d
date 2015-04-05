@@ -14,7 +14,7 @@
 
 ;; load-pathに追加するフォルダ
 ;; 2つ以上フォルダを指定する場合の引数 => (add-to-load-path "elisp" "xxx" "xxx")
-(add-to-load-path "elisp" "conf" "public_repos")
+(add-to-load-path "elisp" "elpa" "conf" "public_repos")
 
 ;;; --- バックアップとオートセーブ ---
 ;; バックアップファイルとオートセーブファイルを ~/.emacs.d/backups/ へ集める
@@ -566,7 +566,15 @@
 ;; xmpfilter
 (require 'rcodetools)
 (global-set-key (kbd "C-c C-d") 'xmp)
-
+(define-key ruby-mode-map (kbd "<C-return>") 'rct-complete-symbol)
+(add-hook 'enh-ruby-mode-hook 'enh-ruby-mode-hook-rcodetools)
+(defun make-ruby-scratch-buffer ()
+  (with-current-buffer (get-buffer-create "*ruby scratch*")
+    (ruby-mode)
+    (current-buffer)))
+(defun ruby-scratch ()
+  (interactive)
+  (pop-to-buffer (make-ruby-scratch-buffer)))
 
 
 ;;======================================================================
