@@ -2,7 +2,8 @@
 ;; ------------------------------------------------------------------------
 
 ;; @ load-path
-
+(setq default-directory "~/")
+(setq command-line-default-directory "~/")
 ;; load-pathの追加関数
 (defun add-to-load-path (&rest paths)
   (let (path)
