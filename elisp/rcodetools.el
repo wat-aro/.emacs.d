@@ -28,6 +28,14 @@
            )
       (insert "=>")
     ad-do-it))
+(ad-disable-advice 'comment-dwim 'around 'rct-hack)
+(ad-update 'comment-dwim)
+(defadvice comment-dwim (around rct-hack activate)
+  "If comment-dwim is successively called, add => mark."
+  (if (and (member major-mode '(ruby-mode enh-ruby-mode))
+           (eq last-command 'comment-dwim))
+      (insert "=>")
+    ad-do-it))
 ;; To remove this advice.
 ;; (progn (ad-disable-advice 'comment-dwim 'around 'rct-hack) (ad-update 'comment-dwim)) 
 
