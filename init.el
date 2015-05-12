@@ -566,9 +566,12 @@
 
 ;; xmpfilter
 (require 'rcodetools)
-(global-set-key (kbd "C-c C-d") 'xmp)
-(define-key ruby-mode-map (kbd "<C-return>") 'rct-complete-symbol)
-(add-hook 'enh-ruby-mode-hook 'enh-ruby-mode-hook-rcodetools)
+(eval-after-load 'enh-ruby-mode
+  '(progn
+     (define-key enh-ruby-mode-map (kbd "C-c C-d") 'xmp)
+     (define-key enh-ruby-mode-map (kbd "M-C-i") 'rct-complete-symbol)))
+
+
 (defun make-ruby-scratch-buffer ()
   (with-current-buffer (get-buffer-create "*ruby scratch*")
     (ruby-mode)
