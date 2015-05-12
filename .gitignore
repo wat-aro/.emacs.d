@@ -13,6 +13,7 @@
 doc/
 *.swp
 *~
+*#
 .project
 .DS_Store
 .idea
@@ -22,4 +23,3 @@ history
 wget-log
 recentf
 ac-comphist.dat
-/backups
