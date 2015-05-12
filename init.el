@@ -562,10 +562,20 @@
 (require 'ruby-block)
 (ruby-block-mode t)
 
+(require 'rcodetools)
+
+(ad-disable-advice 'comment-dwim 'around 'rct-hack)
+(ad-update 'comment-dwim)
+(defadvice comment-dwim (around rct-hack activate)
+  "If comment-dwim is successively called, add => mark."
+  (if (and (member major-mode '(ruby-mode enh-ruby-mode))
+           (eq last-command 'comment-dwim))
+      (insert "=>")
+    ad-do-it))
+
 
 
 ;; xmpfilter
-(require 'rcodetools)
 (eval-after-load 'enh-ruby-mode
   '(progn
      (define-key enh-ruby-mode-map (kbd "C-c C-d") 'xmp)
