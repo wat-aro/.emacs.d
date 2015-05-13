@@ -45,6 +45,66 @@
 (require 'linum)
 (global-linum-mode)
 
+;;; 右から左に読む言語に対応させないことで描画高速化
+(setq-default bidi-display-reordering nil)
+
+;;; splash screenを無効にする
+(setq inhibit-splash-screen t)
+
+;;; 同じ内容を履歴に記録しないようにする
+(setq history-delete-duplicates t)
+
+;; C-u C-SPC C-SPC ...でどんどん過去のマークを遡る
+(setq set-mark-command-repeat-pop t)
+
+;;; 複数のディレクトリで同じファイル名のファイルを開いたときのバッファ名を調整する
+(require 'uniquify)
+;; filename<dir> 形式のバッファ名にする
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+(setq uniquify-ignore-buffers-re "*[^*]+*")
+
+;;; ファイルを開いた位置を保存する
+(require 'saveplace)
+(setq-default save-place t)
+(setq save-place-file (concat user-emacs-directory "places"))
+
+
+;;; ミニバッファ履歴を次回Emacs起動時にも保存する
+(savehist-mode 1)
+
+;;; モードラインに時刻を表示する
+(display-time)
+
+;;; GCを減らして軽くする
+(setq gc-cons-threshold (* 10 gc-cons-threshold))
+
+;;; ログの記録行数を増やす
+(setq message-log-max 10000)
+
+;;; 履歴をたくさん保存する
+(setq history-length 1000)
+
+;;; メニューバーとツールバーとスクロールバーを消す
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+
+(require 'migemo)
+(setq migemo-command "cmigemo")
+(setq migemo-options '("-q" "--emacs"))
+
+;; Set your installed path
+(setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+
+(setq migemo-user-dictionary nil)
+(setq migemo-regex-dictionary nil)
+(setq migemo-coding-system 'utf-8)
+(load-library "migemo")
+(migemo-init)
+
+
+
 ;; smart-compile
 (require 'smart-compile)
 (setq smart-compile-alist
@@ -115,6 +175,61 @@
 (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
 ;; C-iで補完
 (define-key helm-read-file-map (kbd "C-i") 'helm-execute-persistent-action)
+
+(require 'helm-migemo)
+;;; この修正が必要
+(eval-after-load "helm-migemo"
+  '(defun helm-compile-source--candidates-in-buffer (source)
+     (helm-aif (assoc 'candidates-in-buffer source)
+         (append source
+                 `((candidates
+                    . ,(or (cdr it)
+                           (lambda ()
+                             ;; Do not use `source' because other plugins
+                             ;; (such as helm-migemo) may change it
+                             (helm-candidates-in-buffer (helm-get-current-source)))))
+                   (volatile) (match identity)))
+       source)))
+
+
+(require 'helm-swoop)
+;;; isearchからの連携を考えるとC-r/C-sにも割り当て推奨
+(define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
+(define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
+
+;;; 検索結果をcycleしない、お好みで
+(setq helm-swoop-move-to-line-cycle nil)
+
+(cl-defun helm-swoop-nomigemo (&key $query ($multiline current-prefix-arg))
+  "シンボル検索用Migemo無効版helm-swoop"
+  (interactive)
+  (let ((helm-swoop-pre-input-function
+         (lambda () (format "\\_<%s\\_> " (thing-at-point 'symbol)))))
+    (helm-swoop :$source (delete '(migemo) (copy-sequence (helm-c-source-swoop)))
+                :$query $query :$multiline $multiline)))
+;;; C-M-:に割り当て
+(global-set-key (kbd "C-M-:") 'helm-swoop-nomigemo)
+
+;;; [2014-11-25 Tue]
+(when (featurep 'helm-anything)
+  (defadvice helm-resume (around helm-swoop-resume activate)
+    "helm-anything-resumeで復元できないのでその場合に限定して無効化"
+    ad-do-it))
+
+;;; ace-isearch
+(global-ace-isearch-mode 1)
+
+;;; [2015-03-23 Mon]C-u C-s / C-u C-u C-s
+(defun isearch-forward-or-helm-swoop (use-helm-swoop)
+  (interactive "p")
+  (let (current-prefix-arg
+        (helm-swoop-pre-input-function 'ignore))
+    (call-interactively
+     (case use-helm-swoop
+       (1 'isearch-forward)
+       (4 'helm-swoop)
+       (16 'helm-swoop-nomigemo)))))
+(global-set-key (kbd "C-s") 'isearch-forward-or-helm-swoop)
 
 
 ;; dired
