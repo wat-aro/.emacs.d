@@ -1,7 +1,10 @@
 ;;; -*- coding: utf-8 -*-
-(("/home/wat-aro/.emacs.d/init.el" . 493)
+(("/home/wat-aro/.ssh/config" . 74)
+ ("/home/wat-aro/.emacs.d/recentf" . 2553)
+ ("/home/wat-aro/.emacs.d/.git/config" . 153)
+ ("/home/wat-aro/.gitconfig" . 177)
+ ("/home/wat-aro/.emacs.d/init.el" . 493)
  ("/home/wat-aro/.emacs.d/.gitignore" . 301)
- ("/home/wat-aro/.emacs.d/recentf" . 2472)
  ("/home/wat-aro/work/ruby/mix.rb" . 242)
  ("/home/wat-aro/.bash_profile" . 38)
  ("/home/wat-aro/.bashrc" . 3232)
