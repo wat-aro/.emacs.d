@@ -359,6 +359,7 @@
 (require 'smartparens-config)
 (smartparens-global-mode t)
 
+
 ;; 括弧の自動補完
 ;;(electric-pair-mode t)
 ;;(add-to-list 'electric-pair-pairs '(?| . ?|))
@@ -518,6 +519,11 @@
 ;; C-j で改行とインデント
 (global-set-key "\C-j" 'newline-and-indent)
 
+;; M-f,M-bの挙動を変更
+(require 'misc)
+(global-set-key (kbd "M-f") 'forward-to-word)
+(global-set-key (kbd "M-b") 'backward-to-word)
+
 ;; C-a で行の先頭に。もう一度 C-aで文字の始まる位置に移動
 (defun my-goto-line-beginning-or-indent (&optional $position)
   (interactive)
@@ -659,10 +665,10 @@
 
 (setq ruby-insert-encoding-magic-comment nil)
 
-;; ruby-electric
-(require 'ruby-electric)
-(eval-after-load "enh-ruby-mode"
-      '(add-hook 'enh-ruby-mode-hook 'ruby-electric-mode))
+;; ;; ruby-electric
+;; (require 'ruby-electric)
+;; (eval-after-load "enh-ruby-mode"
+;;       '(add-hook 'enh-ruby-mode-hook 'ruby-electric-mode))
 
 ;; 保存時にmagic commentを追加しないようにする
 (defadvice enh-ruby-mode-set-encoding (around stop-enh-ruby-mode-set-encoding)
