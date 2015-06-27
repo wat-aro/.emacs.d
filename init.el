@@ -1,10 +1,26 @@
 ;; -*- Mode: Emacs-Lisp ; Coding: utf-8 -*-
 ;; ------------------------------------------------------------------------
 
+;; 文字コード
+(cond
+ ((eq system-type 'gnu/linux)
+  (prefer-coding-system 'utf-8)
+  (setq coding-system-for-read 'utf-8)
+  (setq coding-system-for-write 'utf-8))
+ ((eq system-type 'darwin)
+  (set-language-environment "Japanese")
+  (set-default-coding-systems 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-buffer-file-coding-system 'utf-8)))
+
 ;; load environment value
 (load-file (expand-file-name "~/.emacs.d/shellenv.el"))
 (dolist (path (reverse (split-string (getenv "PATH") ":")))
   (add-to-list 'exec-path path))
+
+;; common lisp
+(require 'cl)
 
 ;; @ load-path
 (setq default-directory "~/")
@@ -317,13 +333,7 @@
 ;; ------------------------------------------------------------------------
 ;; @ general
 
-;; common lisp
-(require 'cl)
 
-;; 文字コード
-(prefer-coding-system 'utf-8)
-(setq coding-system-for-read 'utf-8)
-(setq coding-system-for-write 'utf-8)
 
 ;;フォントをRictyにする
 (set-face-font 'default "Ricty-15:nil")
@@ -341,7 +351,7 @@
 ;;                  (cons "Ricty Discord" "iso10646-1"))
 
 
-(setq default-input-method "MacOSX")
+;; (setq default-input-method "MacOSX")
 
 
 ;; Google 日本語入力
