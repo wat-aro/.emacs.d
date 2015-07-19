@@ -1,1 +1,1 @@
-(setenv "PATH" "/home/wat-aro/.rbenv/shims:/home/wat-aro/.rbenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games")
+(setenv "PATH" "/Users/wat-aro/.rbenv/shims:/Users/wat-aro/.rbenv/shims:/Users/wat-aro/work/scripts:/Users/wat-aro/.rbenv/bin:/Users/wat-aro/.rbenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X11/bin")

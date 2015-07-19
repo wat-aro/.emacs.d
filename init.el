@@ -8,11 +8,10 @@
   (setq coding-system-for-read 'utf-8)
   (setq coding-system-for-write 'utf-8))
  ((eq system-type 'darwin)
-  (set-language-environment "Japanese")
-  (set-default-coding-systems 'utf-8)
-  (set-terminal-coding-system 'utf-8)
-  (set-keyboard-coding-system 'utf-8)
-  (set-buffer-file-coding-system 'utf-8)))
+  (set-default-coding-systems 'utf-8-unix)
+  (set-terminal-coding-system 'utf-8-unix)
+  (set-keyboard-coding-system 'utf-8-unix)
+  (prefer-coding-system 'utf-8-unix)))
 
 ;; load environment value
 (load-file (expand-file-name "~/.emacs.d/shellenv.el"))
@@ -44,6 +43,16 @@
              (cons "." "~/.emacs.d/backups/"))
 (setq auto-save-file-name-transforms
       `((".*" ,(expand-file-name "~/.emacs.d/backups/") t)))
+
+(when (fboundp 'mac-input-source)
+  (defun my-mac-selected-keyboard-input-source-chage-function ()
+    "英語のときはカーソルの色を黄色に、日本語のときは赤にします."
+    (let ((mac-input-source (mac-input-source)))
+      (set-cursor-color
+       (if (string-match "\\.US$" mac-input-source)
+           "pink" "Red"))))
+  (add-hook 'mac-selected-keyboard-input-source-change-hook
+            'my-mac-selected-keyboard-input-source-chage-function))
 
 (require 'package)
 
