@@ -50,7 +50,7 @@
     (let ((mac-input-source (mac-input-source)))
       (set-cursor-color
        (if (string-match "\\.US$" mac-input-source)
-           "pink" "Red"))))
+           "yellow" "Red"))))
   (add-hook 'mac-selected-keyboard-input-source-change-hook
             'my-mac-selected-keyboard-input-source-chage-function))
 
@@ -465,7 +465,7 @@
 (setq comint-scroll-show-maximum-output t) ;; shell-mode
 
 ;; フレームの透明度
-(set-frame-parameter (selected-frame) 'alpha '(0.90))
+(set-frame-parameter (selected-frame) 'alpha '(0.70))
 
 
 ;; モードラインに行番号表示
