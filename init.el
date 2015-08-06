@@ -568,6 +568,10 @@
         (message (format "%s" $face))
       (message "no face"))))
 
+;; indent-guide
+(require 'indent-guide)
+(indent-guide-global-mode)
+(setq indent-guide-recursive t)
 ;; emacsでGauche
 ; --------------------------------------------------------------------
 (setq process-coding-system-alist
