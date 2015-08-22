@@ -184,9 +184,18 @@
 ;; anzu
 (global-anzu-mode +1)
 (custom-set-variables
- '(anzu-mode-lighter "")
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(anzu-deactivate-region t)
- '(anzu-search-threshold 1000))
+ '(anzu-mode-lighter "")
+ '(anzu-search-threshold 1000)
+ '(custom-safe-themes
+   (quote
+    ("bdaab014ec6785f64b72efbea80808b762d8971247aacf2ffc6b76a39b9ed97c" default)))
+ '(rspec-use-rake-when-possible nil)
+ '(tab-width 2))
 
 ;; auto-complete
 (require 'auto-complete)
@@ -429,7 +438,7 @@
 
 
 ;; タブ幅
-(custom-set-variables '(tab-width 2))
+
 
 ;; インデントにタブ文字を使用しない
 (setq-default indent-tabs-mode nil)
@@ -676,10 +685,10 @@
 
 
 
-
-(when (require 'color-theme nil t)
-(color-theme-initialize)
-(color-theme-hober))
+(load-theme 'gotham t)
+;; (when (require 'color-theme nil t)
+;; (color-theme-initialize)
+;; (color-theme-hober))
 
 ; ================================================================
 ;                          Ruby
@@ -798,8 +807,21 @@
 (require 'rspec-mode)
 (eval-after-load 'rspec-mode
   '(rspec-install-snippets))
-(custom-set-variables '(rspec-use-rake-flag nil))
-(custom-set-faces )
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(web-mode-comment-face ((t (:foreground "#D9333F"))))
+ '(web-mode-css-at-rule-face ((t (:foreground "#FF7F00"))))
+ '(web-mode-css-pseudo-class-face ((t (:foreground "#FF7F00"))))
+ '(web-mode-css-rule-face ((t (:foreground "#A0D8EF"))))
+ '(web-mode-doctype-face ((t (:foreground "#82AE46"))))
+ '(web-mode-html-attr-name-face ((t (:foreground "#C97586"))))
+ '(web-mode-html-attr-value-face ((t (:foreground "#82AE46"))))
+ '(web-mode-html-tag-face ((t (:foreground "#E6B422" :weight bold))))
+ '(web-mode-server-comment-face ((t (:foreground "#D9333F")))))
 
 
 ;;==========================================================
@@ -850,26 +872,7 @@
 (add-hook 'web-mode-hook  'web-mode-hook)
 
 ;; 色の設定
-(custom-set-faces
- '(web-mode-doctype-face
-   ((t (:foreground "#82AE46"))))                          ; doctype
- '(web-mode-html-tag-face
-   ((t (:foreground "#E6B422" :weight bold))))             ; 要素名
- '(web-mode-html-attr-name-face
-   ((t (:foreground "#C97586"))))                          ; 属性名など
- '(web-mode-html-attr-value-face
-   ((t (:foreground "#82AE46"))))                          ; 属性値
- '(web-mode-comment-face
-   ((t (:foreground "#D9333F"))))                          ; コメント
- '(web-mode-server-comment-face
-   ((t (:foreground "#D9333F"))))                          ; コメント
- '(web-mode-css-rule-face
-   ((t (:foreground "#A0D8EF"))))                          ; cssのタグ
- '(web-mode-css-pseudo-class-face
-   ((t (:foreground "#FF7F00"))))                          ; css 疑似クラス
- '(web-mode-css-at-rule-face
-   ((t (:foreground "#FF7F00"))))                          ; cssのタグ
- )
+
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[gj]sp\\'" . web-mode))
