@@ -474,7 +474,7 @@
 (setq comint-scroll-show-maximum-output t) ;; shell-mode
 
 ;; フレームの透明度
-(set-frame-parameter (selected-frame) 'alpha '(0.70))
+(set-frame-parameter (selected-frame) 'alpha '(0.85))
 
 
 ;; モードラインに行番号表示
