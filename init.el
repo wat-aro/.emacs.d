@@ -120,6 +120,7 @@
 (scroll-bar-mode -1)
 
 
+
 (require 'migemo)
 (setq migemo-command "cmigemo")
 (setq migemo-options '("-q" "--emacs"))
@@ -206,6 +207,7 @@
 (ac-config-default)
 (add-to-list 'ac-modes 'enh-ruby-mode)
 (add-to-list 'ac-modes 'web-mode)
+(add-to-list 'ac-modes 'inferior-scheme-mode)
 
 ;; helm
 (require 'helm-config)
@@ -351,39 +353,8 @@
 ;; ------------------------------------------------------------------------
 ;; @ general
 
-
-
 ;;フォントをRictyにする
 (set-face-font 'default "Ricty-15:nil")
-;;(set-face-attribute 'default nil
-;;                    :family "Ricty Discord"
-;;                    :height 140)
-;;(set-fontset-font (frame-parameter nil 'font)
-;;                  'japanese-jisx0208
-;;                  (cons "Ricty Discord" "iso10646-1"))
-;;(set-fontset-font (frame-parameter nil 'font)
-;;                  'japanese-jisx0212
-;;                  (cons "Ricty Discord" "iso10646-1"))
-;;(set-fontset-font (frame-parameter nil 'font)
-;;                  'katakana-jisx0201
-;;                  (cons "Ricty Discord" "iso10646-1"))
-
-
-;; (setq default-input-method "MacOSX")
-
-
-;; Google 日本語入力
-;;(setq default-input-method "MacOSX")
-;(mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "あ")
-
-
-;; 半角と全角の比を1:2にしたければ
-(setq face-font-rescale-alist
-;;        '((".*Hiragino_Mincho_pro.*" . 1.2)))
-;;      '((".*Hiragino_Kaku_Gothic_ProN.*" . 1.2)));; Mac用フォント設定
-      '((".*Ricty" . 1.2)));; Mac用フォント設定
-(setq face-font-rescale-alist
-      '((".*Meiryo" . 1.2)));;Windows用フォント設定
 
 ;; スタートアップ非表示
 (setq inhibit-startup-screen t)
@@ -391,13 +362,6 @@
 ;; 括弧の自動補完
 (require 'smartparens-config)
 (smartparens-global-mode t)
-
-
-;; 括弧の自動補完
-;;(electric-pair-mode t)
-;;(add-to-list 'electric-pair-pairs '(?| . ?|))
-;;(add-to-list 'electric-pair-pairs '(?' . ?'))
-;;(add-to-list 'electric-pair-pairs '(?" . ?"))
 
 ;; scratchの初期メッセージ消去
 (setq initial-scratch-message "")
@@ -417,14 +381,18 @@
 ;; 行番号フォーマット
 (setq linum-format "%4d")
 
+(load-theme 'gotham t)
 
-;; 括弧の範囲内を強調表示
+;; ;; 括弧の範囲内を強調表示
 (show-paren-mode t)
 (setq show-paren-delay 0)
-(setq show-paren-style 'expression)
+;; (setq show-paren-style 'expression)
+;; (set-face-background 'show-paren-match-face "gray05")
+;; (set-face-foreground 'show-paren-match-face "medium violet red")
+;; (set-face-bold 'show-paren-match-face t)
 
-;; 括弧の範囲色
-(set-face-background 'show-paren-match-face "#0008CD")
+;; ;; 括弧の範囲色
+;;(set-face-background 'show-paren-match-face "red")
 
 ;; 対応する括弧を表示する
 (show-paren-mode t)
@@ -442,15 +410,14 @@
 
 ;; インデントにタブ文字を使用しない
 (setq-default indent-tabs-mode nil)
-
 ; yes or noをy or n
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; 最近使ったファイルをメニューに表示
-(recentf-mode t)
+;; (recentf-mode t)
 
 ;; 最近使ったファイルの表示数
-(setq recentf-max-menu-items 10)
+;; (setq recentf-max-menu-items 10)
 
 ;; 最近開いたファイルの保存数を増やす
 (setq recentf-max-saved-items 3000)
@@ -474,7 +441,7 @@
 (setq comint-scroll-show-maximum-output t) ;; shell-mode
 
 ;; フレームの透明度
-(set-frame-parameter (selected-frame) 'alpha '(0.85))
+(set-frame-parameter (selected-frame) 'alpha '(0.90))
 
 
 ;; モードラインに行番号表示
@@ -684,8 +651,8 @@
 
 
 
+;; (load-theme 'warm-night t)
 
-(load-theme 'gotham t)
 ;; (when (require 'color-theme nil t)
 ;; (color-theme-initialize)
 ;; (color-theme-hober))
@@ -894,3 +861,65 @@
 (require 'js2-mode)
 (autoload 'js2-mode "js" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+;; minimap-mode
+(require 'minimap)
+
+;;; カスタマイズできる項目！
+;;; これらはload-themeの前に配置すること
+;; fringeを背景から目立たせる
+;; (setq solarized-distinct-fringe-background t)
+;;
+;; mode-lineを目立たせる(Fig3)
+;; (setq solarized-high-contrast-mode-line t)
+;;
+;; bold度を減らす
+;; (setq solarized-use-less-bold t)
+;;
+;; italicを増やす
+;; (setq solarized-use-more-italic t)
+;;
+;; インジケータの色を減らす (git-gutter, flycheckなど)
+;; (setq solarized-emphasize-indicators nil)
+;;
+;; orgの見出し行の文字の大きさを変えない
+;; (setq solarized-scale-org-headlines nil)
+;;
+;; フォントサイズを変更しない
+;; (setq solarized-height-minus-1 1)
+;; (setq solarized-height-plus-1 1)
+;; (setq solarized-height-plus-2 1)
+;; (setq solarized-height-plus-3 1)
+;; (setq solarized-height-plus-4 1)
+
+;; (load-theme 'solarized-light t)
+;; (load-theme 'solarized-dark t)
+
+
+;;emacs-lisp
+
+;;式の評価結果を注釈するための設定
+(require 'lispxmp)
+(define-key emacs-lisp-mode-map (kbd "C-c C-d") 'lispxmp)
+
+;;括弧の対応を保持して編集する設定
+(require 'paredit)
+(add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+(add-hook 'lisp-mode-hook 'enable-paredit-mode)
+(add-hook 'ielm-mode-hook 'enable-paredit-mode)
+;; (add-hook 'scheme-mode-hook 'enable-paredit-mode)
+(require 'auto-async-byte-compile)
+
+;; 自動コンパイルを無効にするファイル名の正規表現
+(setq auto-async-byte-compile-exclude-file-regexp "/junk/")
+(add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+(setq eldoc-idledeley 0.2)
+(setq eldoc-minor-mode-string "")
+
+;;find-functionをキー割り当てする
+(find-function-setup-keys)
+
