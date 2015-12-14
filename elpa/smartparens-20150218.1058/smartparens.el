@@ -432,7 +432,10 @@ Symbol is defined as a chunk of text recognized by
                          monroe-mode
                          cider-repl-mode
                          clojure-mode
-                         common-lisp-mode)
+                         common-lisp-mode
+                         gauche-mode
+                         kahua-mode
+                         slime-mode)
   "List of Lisp modes.")
 
 (defvar sp--html-modes '(

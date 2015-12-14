@@ -19,7 +19,8 @@
   (add-to-list 'exec-path path))
 
 ;; common lisp
-(require 'cl)
+(eval-when-compile (require 'cl))
+;; (require 'cl)
 
 ;; @ load-path
 (setq default-directory "~/")
@@ -70,7 +71,7 @@
 (auto-install-compatibility-setup)
 
 ;; ミニバッファに表示し, かつ, オーバレイする.
-(setq ruby-block-highlight-toggle t)
+;; (setq ruby-block-highlight-toggle t)
 
 (require 'linum)
 (global-linum-mode)
@@ -207,7 +208,44 @@
 (ac-config-default)
 (add-to-list 'ac-modes 'enh-ruby-mode)
 (add-to-list 'ac-modes 'web-mode)
-(add-to-list 'ac-modes 'inferior-scheme-mode)
+(add-to-list 'ac-modes 'inferior-scheme3-mode)
+(add-to-list 'ac-modes 'gauche-mode)
+(add-to-list 'ac-modes 'kahua-mode)
+
+;;; ac-slime
+(require 'ac-slime)
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
+(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+
+;;; popwin -----------------------
+(require 'popwin)
+(popwin-mode 1)
+;; M-x anything
+(defvar helm-samewindow nil)
+(push '("*anything*" :height 20) popwin:special-display-config)
+
+;; M-x dired-jump-other-window
+(push '(dired-mode :position top) popwin:special-display-config)
+
+;; M-!
+(push "*Shell Command Output*" popwin:special-display-config)
+
+;; M-x compile
+(push '(compilation-mode :noselect t) popwin:special-display-config)
+
+;; slime
+(push "*slime-apropos*" popwin:special-display-config)
+(push "*slime-macroexpansion*" popwin:special-display-config)
+(push "*slime-description*" popwin:special-display-config)
+(push '("*slime-compilation*" :noselect t) popwin:special-display-config)
+(push "*slime-xref*" popwin:special-display-config)
+(push '(sldb-mode :stick t) popwin:special-display-config)
+(push 'slime-repl-mode popwin:special-display-config)
+(push 'slime-connection-list-mode popwin:special-display-config)
+
+;; undo-tree
+(push '(" *undo-tree*" :width 0.3 :position right) popwin:special-display-config)
+;;; ------------------------------
 
 ;; helm
 (require 'helm-config)
@@ -216,6 +254,12 @@
 (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
 ;; C-iで補完
 (define-key helm-read-file-map (kbd "C-i") 'helm-execute-persistent-action)
+(when (require 'popwin)
+  (setq helm-samewindow nil)
+  (defvar display-buffer-function 'popwin:display-buffer)
+  (setq popwin:special-display-config '(("*compilatoin*" :noselect t)
+                                        ("helm" :regexp t :height 0.4)
+                                        )))
 
 (require 'helm-migemo)
 ;;; この修正が必要
@@ -238,8 +282,8 @@
 (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
 (define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
 
-;;; 検索結果をcycleしない、お好みで
-(setq helm-swoop-move-to-line-cycle nil)
+;;; 検索結果をcycle
+(setq helm-swoop-move-to-line-cycle t)
 
 (cl-defun helm-swoop-nomigemo (&key $query ($multiline current-prefix-arg))
   "シンボル検索用Migemo無効版helm-swoop"
@@ -279,7 +323,7 @@
 ;; ディレクトリを再帰的にコピーする
 (setq dired-recursive-copies 'always)
 ;; diredバッファでC-sした時にファイル名だけにマッチするように
-(setq dired-isearch-filenames t)
+;; (defvar dired-isearch-filenames t)
 
 (require 'dired-subtree)
 ;;; iを置き換え
@@ -354,7 +398,7 @@
 ;; @ general
 
 ;;フォントをRictyにする
-(set-face-font 'default "Ricty-15:nil")
+(set-face-font 'default "Ricty-13:nil")
 
 ;; スタートアップ非表示
 (setq inhibit-startup-screen t)
@@ -385,7 +429,7 @@
 
 ;; ;; 括弧の範囲内を強調表示
 (show-paren-mode t)
-(setq show-paren-delay 0)
+(defvar show-paren-delay 0)
 ;; (setq show-paren-style 'expression)
 ;; (set-face-background 'show-paren-match-face "gray05")
 ;; (set-face-foreground 'show-paren-match-face "medium violet red")
@@ -455,10 +499,6 @@
 (cua-mode t)
 (setq cua-enable-cua-keys nil)
 
-;; CmdとOptの入れ替え
-(setq ns-command-modifier (quote meta))
-(setq ns-alternate-modifier (quote super))
-
 ;; emacs-lisp-mode-hook 用の関数を定義
 (defun elisp-mode-hooks ()
   "Lisp-mode-hooks"
@@ -502,6 +542,8 @@
 ;; スクリーンの最大化
 (set-frame-parameter nil 'fullscreen 'maximized)
 
+;; C-k で行全体を削除（改行を含む）
+(setq kill-whole-line t)
 
 ;; C-h を バックスペースへ
 (keyboard-translate ?\C-h ?\C-?)
@@ -513,7 +555,7 @@
 (setq split-height-threshold nil)
 (setq split-width-threshold 100)
 
-;; C-t でウィンドウを切り替える。
+;; C-tab でウィンドウを切り替える。
 (global-set-key "\C-t" 'other-window)
 
 ;; C-j で改行とインデント
@@ -548,25 +590,28 @@
 (require 'indent-guide)
 (indent-guide-global-mode)
 (setq indent-guide-recursive t)
+
+
+
 ;; emacsでGauche
 ; --------------------------------------------------------------------
 (setq process-coding-system-alist
       (cons '("gosh" utf-8 . utf-8) process-coding-system-alist))
-(cond
- ((eq system-type 'gnu/linux)
-  (setq scheme-program-name "gosh -i"))
- ((eq system-type 'darwin)
-  (setq scheme-program-name "/usr/local/bin/gosh -i")))
-
-(autoload 'scheme-mode "cmuscheme" "Major mode for Scheme." t)
-(autoload 'run-scheme "cmuscheme" "Run an inferior Scheme process." t)
+(defvar scheme-program-name "gosh -i")
+(add-to-list 'auto-mode-alist '("\\.scm" . gauche-mode))
+;; (setq auto-mode-alist
+;;      (cons '("\.\(scm\)$" . gauche-mode) auto-mode-alist))
+(autoload 'gauche-mode "gauche-mode" "Major mode for Scheme." t)
+(autoload 'run-scheme "gauche-mode" "Run an inferior Scheme process." t)
+;; (autoload 'scheme-mode "cmuscheme" "Major mode for Scheme." t)
+;; (autoload 'run-scheme "cmuscheme" "Run an inferior Scheme process." t)
 
 (defun scheme-other-window ()
   "Run Gauche on other window"
   (interactive)
   (split-window-horizontally (/ (frame-width) 2))
   (let ((buf-name (buffer-name (current-buffer))))
-    (scheme-mode)
+    (gauche-mode)
     (switch-to-buffer-other-window
      (get-buffer-create "*scheme*"))
     (run-scheme scheme-program-name)
@@ -640,6 +685,8 @@
 (put 'with-string-io 'scheme-indent-function 1)
 (put 'with-time-counter 'scheme-indent-function 1)
 (put 'with-signal-handlers 'scheme-indent-function 1)
+(put 'with-locking-mutex 'scheme-indent-funcion 1)
+(put 'guard 'scheme-indent-function 1)
 
 ; --------------------------------------------------------------------
 
@@ -780,15 +827,16 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(web-mode-comment-face ((t (:foreground "#D9333F"))))
- '(web-mode-css-at-rule-face ((t (:foreground "#FF7F00"))))
- '(web-mode-css-pseudo-class-face ((t (:foreground "#FF7F00"))))
- '(web-mode-css-rule-face ((t (:foreground "#A0D8EF"))))
- '(web-mode-doctype-face ((t (:foreground "#82AE46"))))
- '(web-mode-html-attr-name-face ((t (:foreground "#C97586"))))
- '(web-mode-html-attr-value-face ((t (:foreground "#82AE46"))))
- '(web-mode-html-tag-face ((t (:foreground "#E6B422" :weight bold))))
- '(web-mode-server-comment-face ((t (:foreground "#D9333F")))))
+ ;; '(web-mode-comment-face ((t (:foreground "#D9333F"))))
+ ;; '(web-mode-css-at-rule-face ((t (:foreground "#FF7F00"))))
+ ;; '(web-mode-css-pseudo-class-face ((t (:foreground "#FF7F00"))))
+ ;; '(web-mode-css-rule-face ((t (:foreground "#A0D8EF"))))
+ ;; '(web-mode-doctype-face ((t (:foreground "#82AE46"))))
+ ;; '(web-mode-html-attr-name-face ((t (:foreground "#C97586"))))
+ ;; '(web-mode-html-attr-value-face ((t (:foreground "#82AE46"))))
+ ;; '(web-mode-html-tag-face ((t (:foreground "#E6B422" :weight bold))))
+ ;; '(web-mode-server-comment-face ((t (:foreground "#D9333F"))))
+ )
 
 
 ;;==========================================================
@@ -903,11 +951,11 @@
 (define-key emacs-lisp-mode-map (kbd "C-c C-d") 'lispxmp)
 
 ;;括弧の対応を保持して編集する設定
-(require 'paredit)
-(add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
-(add-hook 'lisp-mode-hook 'enable-paredit-mode)
-(add-hook 'ielm-mode-hook 'enable-paredit-mode)
+;; (require 'paredit)
+;; (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+;; (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+;; (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+;; (add-hook 'ielm-mode-hook 'enable-paredit-mode)
 ;; (add-hook 'scheme-mode-hook 'enable-paredit-mode)
 (require 'auto-async-byte-compile)
 
@@ -923,3 +971,51 @@
 ;;find-functionをキー割り当てする
 (find-function-setup-keys)
 
+(require 'kahua)
+
+
+;;; slime
+(require 'slime)
+;; (load (expand-file-name "~/.roswell/impls/ALL/ALL/quicklisp/slime-helper.el"))
+(setq inferior-lisp-program "ros -L sbcl -Q run")
+(slime-setup '(slime-repl slime-fancy slime-banner slime-indentation))
+(setq slime-net-coding-system 'utf-8-unix)
+;; (setf slime-lisp-implementations
+;;       `((sbcl    ("sbcl" "--dynamic-space-size" "2000"))
+;;         (roswell ("ros" "dynamic-space-size=2000" "-Q" "-l" "~/.sbclrc" "run"))))
+;; (setf slime-default-lisp 'roswell)
+
+(require 'multi-term)
+
+(setq multi-term-program shell-file-name)
+
+(global-set-key (kbd "C-c n") 'multi-term-next)
+(global-set-key (kbd "C-c p") 'multi-term-prev)
+
+(add-hook 'term-mode-hook
+      (lambda ()
+        (define-key term-raw-map (kbd "C-t") 'other-window)
+        (define-key term-raw-map (kbd "C-y") 'term-paste)
+        (define-key term-raw-map (kbd "C-h") 'term-send-backspace)
+            (define-key term-raw-map (kbd "M-d") 'term-send-forward-kill-word)
+            (define-key term-raw-map (kbd "M-<backspace>") 'term-send-backward-kill-word)
+            (define-key term-raw-map (kbd "M-DEL") 'term-send-backward-kill-word)
+            (define-key term-raw-map (kbd "C-v") nil)
+        (define-key term-raw-map (kbd "ESC ESC") 'term-send-raw)
+        (define-key term-raw-map (kbd "C-q") 'toggle-term-view)))
+
+(defun toggle-term-view () (interactive)
+  (cond ((eq major-mode 'term-mode)
+     (fundamental-mode)
+     (view-mode-enable)
+     (local-set-key (kbd "C-c C-c") 'toggle-term-view)
+     (setq multi-term-cursor-point (point)))
+    ((eq major-mode 'fundamental-mode)
+     (view-mode-disable)
+     (goto-char multi-term-cursor-point)
+     (multi-term-internal))))
+
+
+;;; キーボードマクロ
+(fset 'endspace
+   "\C-e  \C-n")
